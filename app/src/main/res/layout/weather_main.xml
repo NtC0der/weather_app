@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_constraintVertical_chainStyle="spread"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:background="@color/mainColor">
+
+    <!--Header-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/header_footer_border"
+        android:orientation="horizontal"
+        android:id="@+id/main_header"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@drawable/search_icon" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="35dp"
+            android:hint="@string/search_hint"/>
+
+    </LinearLayout>
+
+    <!--Main-->
+    <!--Displays weather layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical"
+        android:id="@+id/main_body"
+        app:layout_constraintTop_toBottomOf="@id/main_header"
+        app:layout_constraintBottom_toTopOf="@id/main_footer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!--Contains titles-->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintVertical_chainStyle="spread">
+
+            <TextView
+                android:id="@+id/weather_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:text="@string/weather_title"
+                android:textSize="25sp"
+                android:fontFamily="@font/roboto_regular"/>
+
+            <TextView
+                android:id="@+id/city_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/city_name"
+                android:textSize="30sp"
+                android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="horizontal"
+            android:background="@drawable/header_footer_border"
+            app:layout_constraintVertical_chainStyle="spread">
+
+            <LinearLayout
+                android:layout_width="202dp"
+                android:layout_height="220dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/weather_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="@string/placeholder"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/currentImage"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    app:srcCompat="@drawable/placeholder_img" />
+
+            </LinearLayout>
+
+            <!--Contains weather info-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
+                    <!--Temp info-->
+                    <TextView
+                        android:id="@+id/temperature_real"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/temperature_real"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/wind_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/wind_speed"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/humidity"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
+                    <!--Clouds coverage info-->
+                    <TextView
+                        android:id="@+id/clouds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <!--This contains the weather forecast-->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintVertical_chainStyle="spread">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="290dp"
+                android:orientation="horizontal"
+                >
+
+                <!--Weather block1-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+                        <!--Name of the day-->
+                        <TextView
+                            android:id="@+id/day1"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/placeholder"
+                            android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                            android:id="@+id/day_img1"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block2-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day2"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block3-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day3"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block4-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day4"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img4"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block5-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day5"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img5"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block6-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day6"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img6"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+                <!--Spaces out info-->
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="290dp" />
+
+                <!--Weather block7-->
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="290dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/weather_box_border">
+
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day7"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Contains weather image-->
+                    <ImageView
+                        android:id="@+id/day_img7"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
+
+                    <!--Spaces out info-->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!--Temperature info-->
+                    <TextView
+                        android:id="@+id/for_temp7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_temp"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Wind speed info-->
+                    <TextView
+                        android:id="@+id/for_wind7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_wind_spd"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Humidity info-->
+                    <TextView
+                        android:id="@+id/for_hum7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/short_humidity"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <!--Cloud coverage info-->
+                    <TextView
+                        android:id="@+id/for_cloud7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/clouds_coverage"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_regular"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/header_footer_border"
+        android:orientation="horizontal"
+        android:id="@+id/main_footer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
