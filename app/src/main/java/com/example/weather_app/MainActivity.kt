@@ -25,7 +25,9 @@ class MainActivity : ComponentActivity() { // activity is a screen
 
     private suspend fun loadingUI() { // Function that creates the loading screen
 
-        val loadingHandler = LoadingHandler(this)
+        var loadingHandler: LoadingHandler? = LoadingHandler(this)
+        loadingHandler as LoadingHandler // Casting it as a non nullable
+
         val jsonList: List<ResponseTypes?> = loadingHandler.startUI() // Returns a list in the form of (currentJson, forecastJson)
 
         if (jsonList[0] is ResponseTypes.success) { // Checking if the API didn't return null or an error
@@ -36,6 +38,8 @@ class MainActivity : ComponentActivity() { // activity is a screen
             // Casting them as success type
             currentResponse as ResponseTypes.success
             forecastResponse as ResponseTypes.success
+
+            loadingHandler = null // For garbage collect
 
             mainUI(
                 currentResponse.message,

@@ -18,9 +18,7 @@
         android:background="@drawable/header_footer_border"
         android:orientation="horizontal"
         android:id="@+id/main_header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/appLogo"
@@ -38,30 +36,26 @@
 
     </LinearLayout>
 
-    <!--Main-->
-    <!--Displays weather layout-->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/space1"
+        app:layout_constraintTop_toBottomOf="@id/main_header"/>
+
+    <!--Contains upper part-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="300dp"
         android:orientation="vertical"
-        android:id="@+id/main_body"
-        app:layout_constraintTop_toBottomOf="@id/main_header"
-        app:layout_constraintBottom_toTopOf="@id/main_footer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_chainStyle="spread"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!--Contains titles-->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        android:id="@+id/main_body1"
+        app:layout_constraintTop_toBottomOf="@+id/space1">
+    <!--Contains titles-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintVertical_chainStyle="spread">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/weather_title"
@@ -89,8 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:background="@drawable/header_footer_border"
-            app:layout_constraintVertical_chainStyle="spread">
+            android:background="@drawable/header_footer_border">
 
             <LinearLayout
                 android:layout_width="202dp"
@@ -199,11 +192,33 @@
             </ScrollView>
         </LinearLayout>
 
-        <!--This contains the weather forecast-->
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/space2"
+        app:layout_constraintTop_toBottomOf="@id/main_body1"/>
+
+    <!--This contains the weather forecast-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="290dp"
+        android:orientation="vertical"
+        android:id="@+id/main_body2"
+        app:layout_constraintTop_toBottomOf="@+id/space2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintVertical_chainStyle="spread">
+            app:layout_constraintTop_toTopOf="@+id/main_body1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            app:layout_constraintHeight_default="wrap"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -219,14 +234,14 @@
                     android:gravity="center_horizontal"
                     android:background="@drawable/weather_box_border">
 
-                        <!--Name of the day-->
-                        <TextView
-                            android:id="@+id/day1"
-                            android:layout_width="160dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/placeholder"
-                            android:textSize="20sp"/>
+                    <!--Name of the day-->
+                    <TextView
+                        android:id="@+id/day1"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/placeholder"
+                        android:textSize="20sp"/>
 
                     <!--Spaces out info-->
                     <Space
@@ -235,10 +250,10 @@
 
                     <!--Contains weather image-->
                     <ImageView
-                            android:id="@+id/day_img1"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            app:srcCompat="@drawable/placeholder_img" />
+                        android:id="@+id/day_img1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/placeholder_img" />
 
                     <!--Spaces out info-->
                     <Space
@@ -829,16 +844,22 @@
         </HorizontalScrollView>
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/space3"
+        app:layout_constraintTop_toBottomOf="@id/main_body2"
+        app:layout_constraintBottom_toTopOf="@id/main_footer"/>
+
     <!--Footer-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/header_footer_border"
         android:orientation="horizontal"
+        android:layout_weight="1"
         android:id="@+id/main_footer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
     </LinearLayout>
 

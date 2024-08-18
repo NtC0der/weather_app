@@ -1,9 +1,6 @@
 package com.example.weather_app.classes
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,17 +9,20 @@ import com.example.weather_app.MainActivity
 import com.example.weather_app.R
 import com.example.weather_app.errorHandling.ResponseTypes
 import com.google.gson.JsonObject
-import java.io.IOException
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import android.widget.Space
+import com.example.weather_app.network.WeatherApi
 
-class MainUiHandler(override val activity: MainActivity, private val currentJson: JsonObject, private val forecastJson: JsonObject): HandlerInterface {
+class MainUiHandler(override val activity: MainActivity, private val currentJson: JsonObject, private val forecastJson: JsonObject): HandlerInterface, ClassMethods {
 
     fun startUI() {
 
+        val weatherAPi = WeatherApi()
+
         // Getting maps containing the info of each Json
-        val currentMap = getCurrentData(currentJson)
-        val forecastMap = getForecastData(forecastJson)
+        val currentMap = weatherAPi.getCurrentData(currentJson)
+        val forecastMap = weatherAPi.getForecastData(forecastJson)
 
         if (currentMap != null || forecastMap != null) { // Making sure the json array was proper
 
@@ -32,6 +32,8 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
 
             activity.setContentView(R.layout.weather_main) // Loading the main UI
             setVisibility(View.INVISIBLE) // Making everything invisible
+
+            adjustSpaceSizes()
 
             // Applying the data to the UI
             applyDataCurrent(currentMap)
@@ -49,83 +51,33 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
         }
     }
 
-    // Returns a map with the data of the current weather json
-    private fun getCurrentData(jsonData: JsonObject): Map<String, Any>? { // Gets the useful data out of the jsonObjects
+    // Spaces out linear layouts
+    private fun adjustSpaceSizes() {
 
-        // Extracts data from jsonData
-        val dataArray = jsonData.getAsJsonArray("data")
+        val spaceForEach = calculateSpaceForEach()
 
-        if (dataArray.size() > 0) {
-            val firstDataObject = dataArray[0].asJsonObject
+        val space1 = activity.findViewById<Space>(R.id.space1)
+        val space2 = activity.findViewById<Space>(R.id.space2)
+        val space3 = activity.findViewById<Space>(R.id.space3)
 
-            val cityName = firstDataObject.get("city_name").asString
-            val temp = firstDataObject.get("temp").asFloat
-            val windSpeed = firstDataObject.get("wind_spd").asFloat
-            val humidity = firstDataObject.get("rh").asInt // percentage
-            val clouds = firstDataObject.get("clouds").asInt // percentage
+        val params1 = space1.layoutParams
+        val params2 = space2.layoutParams
+        val params3 = space3.layoutParams
 
-            val weatherObject = firstDataObject.getAsJsonObject("weather")
-            val weatherDescription = weatherObject.get("description").asString
-            val weatherImgID = weatherObject.get("icon").asString // Used to display the correct icon
+        // Assuming you want to set the height of these views
+        params1.height = (params1.height + spaceForEach).toInt()
+        params2.height = (params2.height + spaceForEach).toInt()
+        params3.height = (params3.height + spaceForEach).toInt()
 
-            val currentMap = mapOf(
-                "city" to cityName,
-                "temp" to temp,
-                "wind" to windSpeed,
-                "humidity" to humidity,
-                "clouds" to clouds,
-                "weatherDesc" to weatherDescription,
-                "weatherIMG" to weatherImgID
-            )
-
-            return currentMap
-        }else{ // Something went wrong
-            return null
-        }
+        space1.layoutParams = params1
+        space2.layoutParams = params2
+        space3.layoutParams = params3
     }
 
-    // Returns a map with the data of the current weather json
-    private fun getForecastData(jsonData: JsonObject): MutableMap<String, Map<String, Any>>? {
-        // Extracts data from jsonData
-        val dataArray = jsonData.getAsJsonArray("data")
-
-        if (dataArray.size() > 0) {
-            val forecastMap: MutableMap<String, Map<String, Any>> = mutableMapOf()
-
-            // Looping through each day info in the json
-            dataArray.forEachIndexed{index, dayInfo ->
-
-                val dayJson = dayInfo.asJsonObject
-
-                val minTemp = dayJson.get("min_temp").asFloat
-                val maxTemp = dayJson.get("max_temp").asFloat
-                val windSpeed = dayJson.get("wind_spd").asFloat
-                val humidity = dayJson.get("rh").asInt // percentage
-                val clouds = dayJson.get("clouds").asInt // percentage
-
-                val weatherObject = dayJson.getAsJsonObject("weather")
-                val weatherDescription = weatherObject.get("description").asString
-                val weatherImgID = weatherObject.get("icon").asString // Used to display the correct icon
-
-                val dayMap = mapOf(
-                    "min_temp" to minTemp,
-                    "max_temp" to maxTemp,
-                    "wind" to windSpeed,
-                    "humidity" to humidity,
-                    "clouds" to clouds,
-                    "weatherDesc" to weatherDescription,
-                    "weatherIMG" to weatherImgID
-                )
-
-                // How the map will be registered in the parent map
-                val mapKey = "day${(index+1)}" // adding 1 to the index because it starts from 0
-                forecastMap[mapKey] = dayMap
-            }
-
-            return forecastMap
-        }else{
-            return null
-        }
+    // Calculates how much each size will be added to each space
+    private fun calculateSpaceForEach(): Float {
+        val extraSpace = calculateExtraSpace(activity)
+        return if (extraSpace > 0) extraSpace / 3 else 0f
     }
 
     // Applies the json data to the current weather UI elements
@@ -239,6 +191,18 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
                 7 -> activity.findViewById<TextView>(R.id.for_cloud7)
                 else -> throw IllegalArgumentException("Invalid index: $i")
             }
+
+            val dayTitle = when (i) {
+                1 -> activity.findViewById<TextView>(R.id.day1)
+                2 -> activity.findViewById<TextView>(R.id.day2)
+                3 -> activity.findViewById<TextView>(R.id.day3)
+                4 -> activity.findViewById<TextView>(R.id.day4)
+                5 -> activity.findViewById<TextView>(R.id.day5)
+                6 -> activity.findViewById<TextView>(R.id.day6)
+                7 -> activity.findViewById<TextView>(R.id.day7)
+                else -> throw IllegalArgumentException("Invalid index: $i")
+            }
+
             val imageView = when (i) {
                 1 -> activity.findViewById<ImageView>(R.id.day_img1)
                 2 -> activity.findViewById<ImageView>(R.id.day_img2)
@@ -249,6 +213,9 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
                 7 -> activity.findViewById<ImageView>(R.id.day_img7)
                 else -> throw IllegalArgumentException("Invalid index: $i")
             }
+
+            val desiredDay = getDayOfWeek(i) // Gets the day of the week the forecast reffers to
+            dayTitle.text = desiredDay
 
             val minTemp = dayMap?.get("min_temp")
             val maxTemp = dayMap?.get("max_temp")
@@ -275,23 +242,6 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
         }
     }
 
-    private fun setImage(imageToChange: ImageView, imageName: String){ // Changes the image of an ImageView
-
-        try {
-            // Construct the drawable resource name by adding "icons_" prefix
-            val resourceId = activity.resources.getIdentifier(imageName, "drawable", activity.packageName)
-
-            if (resourceId != 0) {
-                // Set the image resource to the ImageView
-                imageToChange.setImageResource(resourceId)
-            } else {
-                throw Resources.NotFoundException("Image not found in drawable/icons: $imageName")
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
     // Changes visibility of all elements
     private fun setVisibility(visibility: Int){
 
@@ -299,12 +249,16 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
         val headerElement = activity.findViewById<LinearLayout>(R.id.main_header)
         headerElement.visibility = visibility
 
-        val bodyElement = activity.findViewById<LinearLayout>(R.id.main_body)
-        bodyElement.visibility = visibility
+        val bodyElement1 = activity.findViewById<LinearLayout>(R.id.main_body1)
+        bodyElement1.visibility = visibility
+
+        val bodyElement2 = activity.findViewById<LinearLayout>(R.id.main_body2)
+        bodyElement2.visibility = visibility
 
         val footerElement = activity.findViewById<LinearLayout>(R.id.main_footer)
         footerElement.visibility = visibility
     }
+
     // Will be used to apply fade in anim
     private fun applyAnimationToViews(viewGroup: ViewGroup, animation: android.view.animation.Animation) {
         for (i in 0 until viewGroup.childCount) {
