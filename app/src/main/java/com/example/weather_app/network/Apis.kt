@@ -5,19 +5,26 @@ import com.google.gson.JsonObject
 import java.net.URL
 
 // Bellow we override the key and url values in the parent class
-class WeatherApi(val lat: String = "37.97945", val lon: String = "23.71622") : Request {
+class WeatherApi() : Request {
 
-    // Default params are for Athens
-
-    /*override val API_url: URL
-        get() = constructUrl() // changing the url to the correct one*/
 
     companion object{ // here we store the url and key
         const val current_url: String = "https://api.weatherbit.io/v2.0/current" // tells you current weather
         const val forecast_url: String = "https://api.weatherbit.io/v2.0/forecast/daily" // tells weather forecast
 
-        private const val key: String = "4e13091f6f574e19997faa7f9b33c2db" // or bb56ea1fb1fc483f8fa00b574719e924
+        private const val key: String = "bb56ea1fb1fc483f8fa00b574719e924"
+        //4e13091f6f574e19997faa7f9b33c2db or bb56ea1fb1fc483f8fa00b574719e924
+
+        // Default params are for Athens
+        private const val def_lat = "37.97945"
+        private const val def_lon = "23.71622"
     }
+
+    override suspend fun requestData(): ResponseTypes {
+        return super.requestData()
+    }
+
+    override var API_url: URL = constructUrl(current_url, def_lat, def_lon) // default url
 
     // Returns a map with the data of the current weather json
     fun getCurrentData(jsonData: JsonObject): Map<String, Any>? { // Gets the useful data out of the jsonObjects
@@ -98,18 +105,12 @@ class WeatherApi(val lat: String = "37.97945", val lon: String = "23.71622") : R
         }
     }
 
-    override suspend fun requestData(): ResponseTypes {
-        return super.requestData()
-    }
-
-    override var API_url: URL = constructUrl(current_url) // default url
-
-    fun setURL(url: String){ // Changes the url used
-        API_url = constructUrl(url)
+    fun setURL(url: String, lat: String=def_lat, lon: String=def_lon){ // Changes the url used
+        API_url = constructUrl(url, lat, lon)
     }
 
     // Protected utility method to construct the URL
-    private fun constructUrl(url: String): URL {
+    private fun constructUrl(url: String, lat: String, lon: String): URL {
         return URL("$url?lat=$lat&lon=$lon&key=$key")
     }
 }

@@ -10,6 +10,8 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
+import java.io.IOException
+import java.net.MalformedURLException
 
 interface Request {
 
@@ -21,10 +23,13 @@ interface Request {
 
         try {
             val url = API_url
+            Log.d("DebugTag", url.toString())
 
             val connection = withContext(Dispatchers.IO) {
                 url.openConnection() as HttpURLConnection
             }
+
+            Log.d("DebugTag", "Opened")
 
             connection.requestMethod = "GET"
 
@@ -39,6 +44,8 @@ interface Request {
                     val gson = Gson()  // Creating a Gson instance here
                     val jsonResponse = gson.fromJson(response, JsonObject::class.java)
 
+                    Log.d("DebugTag", "we good")
+
                     responseMessage = ResponseTypes.success(jsonResponse)
                 } catch (e: JsonSyntaxException) {
                     responseMessage = ResponseTypes.error("Error: Invalid JSON response.")
@@ -48,10 +55,16 @@ interface Request {
             }
 
             connection.disconnect()
+        } catch (e: MalformedURLException) {
+            Log.e("DebugTag", "Invalid URL: ${e.message}", e)
+            responseMessage = ResponseTypes.error("Error: Invalid URL")
+        } catch (e: IOException) {
+            Log.e("DebugTag", "Network Error: ${e.message}", e)
+            responseMessage = ResponseTypes.error("Error: Network error")
         } catch (e: Exception) {
+            Log.e("DebugTag", "Unexpected Error: ${e.message}", e)
             responseMessage = handleException(e)
         }
-
         return responseMessage
     }
 
@@ -94,7 +107,14 @@ interface Request {
             }
 
             connection.disconnect()
+        } catch (e: MalformedURLException) {
+            Log.e("DebugTag", "Invalid URL: ${e.message}", e)
+            responseMessage = ResponseTypes.error("Error: Invalid URL")
+        } catch (e: IOException) {
+            Log.e("DebugTag", "Network Error: ${e.message}", e)
+            responseMessage = ResponseTypes.error("Error: Network error")
         } catch (e: Exception) {
+            Log.e("DebugTag", "Unexpected Error: ${e.message}", e)
             responseMessage = handleException(e)
         }
 

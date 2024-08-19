@@ -1,8 +1,5 @@
 package com.example.weather_app.classes
 
-import android.content.Context
-import android.content.res.Resources
-import android.os.Handler
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -13,21 +10,14 @@ import com.example.weather_app.R
 import androidx.lifecycle.lifecycleScope
 import android.util.Log
 
-import com.example.weather_app.errorHandling.FatalError
 import com.example.weather_app.errorHandling.ResponseTypes
 import com.example.weather_app.network.WeatherApi
 
 import kotlinx.coroutines.launch
-import android.content.SharedPreferences
-import com.google.gson.JsonObject
-import com.opencsv.CSVReader
+import com.example.weather_app.interfaces.HandlerInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.util.Timer
-import kotlin.concurrent.schedule
 
 private const val DebugTag: String = "mistake"
 
@@ -73,15 +63,6 @@ class LoadingHandler(override val activity: MainActivity): HandlerInterface {
     private suspend fun loadData(): List<ResponseTypes?> {
 
         return withContext(Dispatchers.IO) {
-            try {
-                // Initialize the database
-                val database = AppDatabase.getDatabase(activity)
-            } catch (e: Exception) {
-                e.printStackTrace()
-
-                val errorMessage = ResponseTypes.error("Database error: ${e.message}")
-                handleError(errorMessage) // displaying the error screen
-            }
 
             var listToBeReturned: List<ResponseTypes?> =
                 listOf(ResponseTypes.error("Something unexpected happened"))

@@ -155,6 +155,10 @@ interface CityDao {
     @Query("SELECT * FROM city WHERE city_id = :cityId LIMIT 1")
     fun getCityById(cityId: Long): City?
 
+    // Query to retrieve a city by its name
+    @Query("SELECT * FROM city WHERE city_name = :cityName LIMIT 1")
+    fun getCityByName(cityName: String): City?
+
     // Query to delete all cities from the database
     @Query("DELETE FROM city")
     suspend fun clearAllCities()
@@ -183,7 +187,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "city_database" // Name of the database file in the app's internal storage.
                 )
-                    .createFromAsset("databases/city_database") // Copy the pre-populated database from the assets folder.
+                    .createFromAsset("city_database") // Copy the pre-populated database from the assets folder.
                     .build()
 
                 // Assign the newly created instance to the INSTANCE variable.

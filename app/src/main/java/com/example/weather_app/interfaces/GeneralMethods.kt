@@ -1,4 +1,4 @@
-package com.example.weather_app.classes
+package com.example.weather_app.interfaces
 
 import android.content.Context
 import android.content.res.Resources

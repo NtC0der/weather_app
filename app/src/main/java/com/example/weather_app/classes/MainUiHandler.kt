@@ -1,6 +1,9 @@
 package com.example.weather_app.classes
 
 import android.annotation.SuppressLint
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,44 +13,117 @@ import com.example.weather_app.R
 import com.example.weather_app.errorHandling.ResponseTypes
 import com.google.gson.JsonObject
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.Space
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.example.weather_app.interfaces.ClassMethods
+import com.example.weather_app.interfaces.HandlerInterface
 import com.example.weather_app.network.WeatherApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainUiHandler(override val activity: MainActivity, private val currentJson: JsonObject, private val forecastJson: JsonObject): HandlerInterface, ClassMethods {
+class MainUiHandler(override val activity: MainActivity): HandlerInterface, ClassMethods {
 
-    fun startUI() {
+    private val weatherApi = WeatherApi()
 
-        val weatherAPi = WeatherApi()
+    private lateinit var db: AppDatabase
+    private lateinit var cityDao: CityDao
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var textEntry: AutoCompleteTextView
+
+    init {
+        // Initializing the database
+        try {
+
+            db = AppDatabase.getDatabase(activity)
+            cityDao = db.cityDao()
+        }catch (e: Exception){
+            e.printStackTrace()
+
+            val errorMessage = ResponseTypes.error("Couldn't initialize the database: ${e.message}")
+            handleError(errorMessage)
+        }
+    }
+
+    fun startUI(currentJson: JsonObject, forecastJson: JsonObject) {
 
         // Getting maps containing the info of each Json
-        val currentMap = weatherAPi.getCurrentData(currentJson)
-        val forecastMap = weatherAPi.getForecastData(forecastJson)
+        val currentMap = weatherApi.getCurrentData(currentJson)
+        val forecastMap = weatherApi.getForecastData(forecastJson)
 
-        if (currentMap != null || forecastMap != null) { // Making sure the json array was proper
-
-            // We have confirmed they aren't null so we can safely cast them as not nullable
-            currentMap as Map<String, Any>
-            forecastMap as Map<String, Any>
-
-            activity.setContentView(R.layout.weather_main) // Loading the main UI
-            setVisibility(View.INVISIBLE) // Making everything invisible
-
-            adjustSpaceSizes()
-
-            // Applying the data to the UI
-            applyDataCurrent(currentMap)
-            applyDataForecast(forecastMap)
-
-            setVisibility(View.VISIBLE) // Now that the data has loaded we make everything visible
-            // Getting the rootLayout that contains all elements
-            val rootLayout = activity.findViewById<ViewGroup>(R.id.main_layout)
-            val animation = AnimationUtils.loadAnimation(activity, R.anim.fade1in)
-
-            applyAnimationToViews(rootLayout, animation) // Playing the fade in animation
-        }else{
+        if (currentMap == null || forecastMap == null) { // Making sure the json array was proper
             val errorMessage = ResponseTypes.error("Json data array want bigger than 0")
             handleError(errorMessage) // Displaying error screen
+
+            return
+        }
+
+        val rootLayout = activity.findViewById<View>(android.R.id.content)
+        rootLayout as ViewGroup // Casting it as the correct type
+
+        var animationDurationMs: Long
+
+        if (rootLayout.id == R.id.main_layout) { // if this isn't the first time showing the weather
+
+            val animation = AnimationUtils.loadAnimation(activity, R.anim.fade_cycle)
+            applyAnimationToViews(rootLayout, animation) // Playing the fade in animation
+            animationDurationMs = 2000
+        }else{ // First time showing weather
+            activity.setContentView(R.layout.weather_main) // Loading the main UI
+
+            val animation = AnimationUtils.loadAnimation(activity, R.anim.fade1in)
+            applyAnimationToViews(rootLayout, animation) // Playing the fade in animation
+            animationDurationMs = 1000
+        }
+
+        setVisibility(View.INVISIBLE) // Making everything invisible
+
+        adjustSpaceSizes()
+
+        // Applying the data to the UI
+        applyDataCurrent(currentMap)
+        applyDataForecast(forecastMap)
+
+        setVisibility(View.VISIBLE) // Now that the data has loaded we make everything visible
+        val animation = AnimationUtils.loadAnimation(activity, R.anim.fade1in)
+
+        rootLayout.isEnabled = false // Making it so the user cant click buttons while the fade in
+        applyAnimationToViews(rootLayout, animation) // Playing the fade in animation
+
+        textEntry = activity.findViewById<AutoCompleteTextView>(R.id.searchText)
+
+        // Initializes the adapter
+        adapter = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        textEntry.setAdapter(adapter)
+
+        // Letting the code know that the text has been changed
+        textEntry.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchCities(s.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+        val searchButton = activity.findViewById<ImageView>(R.id.searchButton)
+
+        // Runs the function which will later on display the info of the city pressed
+        searchButton.setOnClickListener {
+
+            searchPressed(textEntry.text)
+        }
+
+        activity.lifecycleScope.launch {
+            delay(animationDurationMs)
+            rootLayout.isEnabled = true // Now that everything's fine we re-enable the layout
         }
     }
 
@@ -191,7 +267,6 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
                 7 -> activity.findViewById<TextView>(R.id.for_cloud7)
                 else -> throw IllegalArgumentException("Invalid index: $i")
             }
-
             val dayTitle = when (i) {
                 1 -> activity.findViewById<TextView>(R.id.day1)
                 2 -> activity.findViewById<TextView>(R.id.day2)
@@ -202,7 +277,6 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
                 7 -> activity.findViewById<TextView>(R.id.day7)
                 else -> throw IllegalArgumentException("Invalid index: $i")
             }
-
             val imageView = when (i) {
                 1 -> activity.findViewById<ImageView>(R.id.day_img1)
                 2 -> activity.findViewById<ImageView>(R.id.day_img2)
@@ -267,6 +341,68 @@ class MainUiHandler(override val activity: MainActivity, private val currentJson
                 is TextView -> view.startAnimation(animation)
                 is ImageView -> view.startAnimation(animation)
                 is ViewGroup -> applyAnimationToViews(view, animation) // Recursively apply to children
+            }
+        }
+    }
+
+    // Runs every time the search text box is edited
+    private fun searchCities(query: String) {
+        // Uses Coroutine to perform database query on a background thread
+        activity.lifecycleScope.launch {
+            val cityNames = withContext(Dispatchers.IO) {
+                // Executes the search query in the DAO to find cities matching the user's input.
+                // The query uses wildcards (%) to allow partial matching of city names.
+                cityDao.searchCitiesByName("%$query%").map { it.city_name }
+            }
+            adapter.clear()
+            adapter.addAll(cityNames)  // Adds all the city names returned from the search query to the adapter.
+            adapter.notifyDataSetChanged()
+
+            if (cityNames.isNotEmpty()) {
+                textEntry.showDropDown()
+            }
+        }
+    }
+
+    // Runs when the user presses the search button
+    private fun searchPressed(text: Editable) {
+
+        val searchQuery = text.toString()
+
+        activity.lifecycleScope.launch(Dispatchers.IO) {
+            // Perform the database query on the IO thread to avoid blocking the main UI thread.
+            val city = withContext(Dispatchers.IO) {
+                cityDao.getCityByName(searchQuery)
+            }
+
+            // If the city exists, retrieve the latitude and longitude.
+            if (city != null) {
+                val latitude = city.lat
+                val longitude = city.lon
+
+                // Getting the new current weather json
+                weatherApi.setURL(WeatherApi.current_url, latitude.toString(), longitude.toString())
+                val currentJson = weatherApi.requestData()
+
+                //Getting the new forecast
+                weatherApi.setURL(WeatherApi.forecast_url, lat = latitude.toString(), lon = longitude.toString())
+                val forecastJson = weatherApi.requestData()
+
+                Log.d("damn", "got here")
+                if (currentJson is ResponseTypes.success && forecastJson is ResponseTypes.success) {
+                    // Refreshing the UI
+                    activity.lifecycleScope.launch(Dispatchers.Main){startUI(currentJson.message, forecastJson.message)}
+                }else if (currentJson is ResponseTypes.error){ // Current API faced an error
+                    handleError(currentJson)
+                }else if (forecastJson is ResponseTypes.error){ // Forecast API faced an error
+                    handleError(forecastJson)
+                }
+
+            } else {
+                // Handle the case where the city is not found.
+                activity.lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(activity, "City not found!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

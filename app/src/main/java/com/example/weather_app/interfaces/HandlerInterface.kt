@@ -1,12 +1,9 @@
-package com.example.weather_app.classes
+package com.example.weather_app.interfaces
 
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import com.example.weather_app.MainActivity
 import com.example.weather_app.errorHandling.FatalError
 import com.example.weather_app.errorHandling.ResponseTypes
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private const val DebugTag = "FIXING"
 

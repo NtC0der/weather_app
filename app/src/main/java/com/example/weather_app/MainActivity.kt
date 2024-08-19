@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity() { // activity is a screen
 
     private fun mainUI(currentJson: JsonObject, forecastJson: JsonObject){ // Function that creates the main screen
 
-        val mainHandler = MainUiHandler(this, currentJson, forecastJson)
-        mainHandler.startUI()
+        val mainHandler = MainUiHandler(this)
+        mainHandler.startUI(currentJson, forecastJson)
     }
 }
 
