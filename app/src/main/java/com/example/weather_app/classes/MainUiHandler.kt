@@ -188,6 +188,16 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
         val defaultTemp = activity.getString(R.string.temperature_real)
         temperatureTitle.text = "$defaultTemp ${temperature}C"
 
+        val temperatureFeelTitle = activity.findViewById<TextView>(R.id.temperature_feel)
+        val temperatureFeel = currentMap["temp_feel"]
+
+        // Casting the temperature feel as a float and then making it into a string
+        temperatureFeel as Float
+        temperatureFeel.toString()
+
+        val defaultTempFeel = activity.getString(R.string.temp_feel)
+        temperatureFeelTitle.text = "$defaultTempFeel ${temperatureFeel}C"
+
         val windTitle = activity.findViewById<TextView>(R.id.wind_speed)
         val windSpeed = currentMap["wind"]
 
@@ -227,6 +237,17 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
 
             val dayMap = forecastMap?.get("day$i") // getting the map of this loop's day
 
+            val weatherDescTitle = when (i) {
+                1 -> activity.findViewById<TextView>(R.id.weather_title1)
+                2 -> activity.findViewById<TextView>(R.id.weather_title2)
+                3 -> activity.findViewById<TextView>(R.id.weather_title3)
+                4 -> activity.findViewById<TextView>(R.id.weather_title4)
+                5 -> activity.findViewById<TextView>(R.id.weather_title5)
+                6 -> activity.findViewById<TextView>(R.id.weather_title6)
+                7 -> activity.findViewById<TextView>(R.id.weather_title7)
+                else -> throw IllegalArgumentException("Invalid index: $i")
+            }
+
             val tempTitle = when (i) {
                 1 -> activity.findViewById<TextView>(R.id.for_temp1)
                 2 -> activity.findViewById<TextView>(R.id.for_temp2)
@@ -237,6 +258,18 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
                 7 -> activity.findViewById<TextView>(R.id.for_temp7)
                 else -> throw IllegalArgumentException("Invalid index: $i")
             }
+
+            val tempFeelTitle = when (i) {
+                1 -> activity.findViewById<TextView>(R.id.for_temp_feel1)
+                2 -> activity.findViewById<TextView>(R.id.for_temp_feel2)
+                3 -> activity.findViewById<TextView>(R.id.for_temp_feel3)
+                4 -> activity.findViewById<TextView>(R.id.for_temp_feel4)
+                5 -> activity.findViewById<TextView>(R.id.for_temp_feel5)
+                6 -> activity.findViewById<TextView>(R.id.for_temp_feel6)
+                7 -> activity.findViewById<TextView>(R.id.for_temp_feel7)
+                else -> throw IllegalArgumentException("Invalid index: $i")
+            }
+
             val windTitle = when (i) {
                 1 -> activity.findViewById<TextView>(R.id.for_wind1)
                 2 -> activity.findViewById<TextView>(R.id.for_wind2)
@@ -291,11 +324,20 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
             val desiredDay = getDayOfWeek(i) // Gets the day of the week the forecast reffers to
             dayTitle.text = desiredDay
 
+            val weatherDesc = dayMap?.get("weatherDesc")
+            weatherDescTitle.text = "$weatherDesc"
+
             val minTemp = dayMap?.get("min_temp")
             val maxTemp = dayMap?.get("max_temp")
             val defaultTemp = activity.getString(R.string.short_temp)
 
             tempTitle.text = "$defaultTemp $minTemp - ${maxTemp}C"
+
+            val minTempFeel = dayMap?.get("min_temp_feel")
+            val maxTempFeel = dayMap?.get("max_temp_feel")
+            val defaultTempFeel = activity.getString(R.string.temp_feel)
+
+            tempFeelTitle.text = "$defaultTempFeel $minTempFeel - ${maxTempFeel}C"
 
             val windSpeed = dayMap?.get("wind")
             val defaultWind = activity.getString(R.string.short_wind_spd)
@@ -391,7 +433,7 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
                 val currentJson = weatherApi.requestData()
 
                 //Getting the new forecast
-                weatherApi.setURL(WeatherApi.forecast_url, lat = latitude.toString(), lon = longitude.toString())
+                weatherApi.setURL(WeatherApi.forecast_url, latitude.toString(), longitude.toString())
                 val forecastJson = weatherApi.requestData()
 
                 if (currentJson is ResponseTypes.success && forecastJson is ResponseTypes.success) {

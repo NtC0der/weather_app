@@ -4,7 +4,6 @@ import com.example.weather_app.errorHandling.ResponseTypes
 import com.google.gson.JsonObject
 import java.net.URL
 
-// Bellow we override the key and url values in the parent class
 class WeatherApi() : Request {
 
 
@@ -37,6 +36,7 @@ class WeatherApi() : Request {
 
             val cityName = firstDataObject.get("city_name").asString
             val temp = firstDataObject.get("temp").asFloat
+            val tempFeel = firstDataObject.get("app_temp").asFloat
             val windSpeed = firstDataObject.get("wind_spd").asFloat
             val humidity = firstDataObject.get("rh").asInt // percentage
             val clouds = firstDataObject.get("clouds").asInt // percentage
@@ -48,6 +48,7 @@ class WeatherApi() : Request {
             val currentMap = mapOf(
                 "city" to cityName,
                 "temp" to temp,
+                "temp_feel" to tempFeel,
                 "wind" to windSpeed,
                 "humidity" to humidity,
                 "clouds" to clouds,
@@ -76,6 +77,8 @@ class WeatherApi() : Request {
 
                 val minTemp = dayJson.get("min_temp").asFloat
                 val maxTemp = dayJson.get("max_temp").asFloat
+                val minTempFeel = dayJson.get("app_min_temp").asFloat
+                val maxTempFeel = dayJson.get("app_max_temp").asFloat
                 val windSpeed = dayJson.get("wind_spd").asFloat
                 val humidity = dayJson.get("rh").asInt // percentage
                 val clouds = dayJson.get("clouds").asInt // percentage
@@ -87,6 +90,8 @@ class WeatherApi() : Request {
                 val dayMap = mapOf(
                     "min_temp" to minTemp,
                     "max_temp" to maxTemp,
+                    "min_temp_feel" to minTempFeel,
+                    "max_temp_feel" to maxTempFeel,
                     "wind" to windSpeed,
                     "humidity" to humidity,
                     "clouds" to clouds,

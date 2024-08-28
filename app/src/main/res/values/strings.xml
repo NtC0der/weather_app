@@ -15,4 +15,5 @@
     <string name="short_temp">Temp:</string>
     <string name="short_wind_spd">Wind spd:</string>
     <string name="short_humidity">Hum:</string>
+    <string name="temp_feel">Temp feel:</string>
 </resources>
