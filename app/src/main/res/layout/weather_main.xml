@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:background="@color/mainColor">
+    android:background="@drawable/main_background">
 
     <Space
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
             android:id="@+id/searchText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:paddingTop="30dp"
             android:hint="@string/search_hint" />
     </LinearLayout>
@@ -64,18 +65,18 @@
 
             <TextView
                 android:id="@+id/weather_title"
-                android:layout_width="wrap_content"
+                android:layout_width="131dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:paddingLeft="5dp"
                 android:text="@string/weather_title"
-                android:textSize="25sp"
-                android:fontFamily="@font/roboto_regular"/>
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/city_name"
-                android:layout_width="wrap_content"
+                android:layout_width="131dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -245,6 +246,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -334,6 +336,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -422,6 +425,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -511,6 +515,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -599,6 +604,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -688,6 +694,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 
@@ -776,6 +783,7 @@
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="5dp"
                         android:text="@string/placeholder"
                         android:textSize="20sp"/>
 

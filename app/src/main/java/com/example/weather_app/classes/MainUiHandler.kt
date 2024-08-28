@@ -66,7 +66,7 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
         val rootLayout = activity.findViewById<View>(android.R.id.content)
         rootLayout as ViewGroup // Casting it as the correct type
 
-        var animationDurationMs: Long
+        val animationDurationMs: Long
 
         if (rootLayout.id == R.id.main_layout) { // if this isn't the first time showing the weather
 
@@ -352,13 +352,18 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
             val cityNames = withContext(Dispatchers.IO) {
                 // Executes the search query in the DAO to find cities matching the user's input.
                 // The query uses wildcards (%) to allow partial matching of city names.
-                cityDao.searchCitiesByName("%$query%").map { it.city_name }
+
+                if (cityDao.getCityByName(query) == null) { // Exact match doesn't exist
+                    cityDao.searchCitiesByName("%$query%").map { "${it.city_name}, ${it.country_full}" }
+                }else{ // Exact match exists, no need to display dropdown menu
+                    listOf()
+                }
             }
             adapter.clear()
             adapter.addAll(cityNames)  // Adds all the city names returned from the search query to the adapter.
             adapter.notifyDataSetChanged()
 
-            if (cityNames.isNotEmpty()) {
+            if (cityNames.isNotEmpty()) { // it means it succesfully founda match
                 textEntry.showDropDown()
             }
         }
@@ -368,11 +373,12 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
     private fun searchPressed(text: Editable) {
 
         val searchQuery = text.toString()
+        val cityName = searchQuery.split(",")[0] // Extracting city name out of query
 
         activity.lifecycleScope.launch(Dispatchers.IO) {
             // Perform the database query on the IO thread to avoid blocking the main UI thread.
             val city = withContext(Dispatchers.IO) {
-                cityDao.getCityByName(searchQuery)
+                cityDao.getCityByName(cityName)
             }
 
             // If the city exists, retrieve the latitude and longitude.
@@ -388,7 +394,6 @@ class MainUiHandler(override val activity: MainActivity): HandlerInterface, Clas
                 weatherApi.setURL(WeatherApi.forecast_url, lat = latitude.toString(), lon = longitude.toString())
                 val forecastJson = weatherApi.requestData()
 
-                Log.d("damn", "got here")
                 if (currentJson is ResponseTypes.success && forecastJson is ResponseTypes.success) {
                     // Refreshing the UI
                     activity.lifecycleScope.launch(Dispatchers.Main){startUI(currentJson.message, forecastJson.message)}

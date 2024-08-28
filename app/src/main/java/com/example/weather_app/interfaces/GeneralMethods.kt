@@ -1,11 +1,12 @@
 package com.example.weather_app.interfaces
 
 import android.content.Context
-import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.widget.ImageView
 import com.example.weather_app.MainActivity
+import java.io.IOException
 import java.util.Calendar
 
 // Contains general methods that could be used by many handlers
@@ -37,16 +38,18 @@ interface ClassMethods {
     fun setImage(imageToChange: ImageView, imageName: String){ // Changes the image of an ImageView
 
         try {
-            // Construct the drawable resource name by adding "icons_" prefix
-            val resourceId = activity.resources.getIdentifier(imageName, "drawable", activity.packageName)
+            // Construct the path to the image inside the assets folder
+            val assetManager = activity.assets
+            val inputStream = assetManager.open("icons/$imageName.png")
 
-            if (resourceId != 0) {
-                // Set the image resource to the ImageView
-                imageToChange.setImageResource(resourceId)
-            } else {
-                throw Resources.NotFoundException("Image not found in drawable: $imageName")
-            }
-        } catch (e: Resources.NotFoundException) {
+            // Decode the input stream into a Bitmap
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
+
+            // Set the Bitmap to the ImageView
+            imageToChange.setImageBitmap(bitmap)
+
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
