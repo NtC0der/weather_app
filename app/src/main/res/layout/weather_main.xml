@@ -251,13 +251,13 @@
                 <!--Weather block1-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -398,14 +398,14 @@
                 <!--Weather block2-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
+
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
-
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -547,13 +547,13 @@
                 <!--Weather block3-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -695,14 +695,13 @@
                 <!--Weather block4-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
-
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -843,13 +842,13 @@
                 <!--Weather block5-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -990,14 +989,13 @@
                 <!--Weather block6-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
-
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
@@ -1139,13 +1137,13 @@
                 <!--Weather block7-->
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weather_box_border">
                     <LinearLayout
                         android:layout_width="180dp"
                         android:layout_height="290dp"
                         android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/weather_box_border">
+                        android:gravity="center_horizontal">
 
                         <!--Name of the day-->
                         <TextView
