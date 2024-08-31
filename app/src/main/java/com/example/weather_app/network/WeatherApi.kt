@@ -1,5 +1,6 @@
 package com.example.weather_app.network
 
+import com.example.weather_app.BuildConfig
 import com.example.weather_app.errorHandling.ResponseTypes
 import com.google.gson.JsonObject
 import java.net.URL
@@ -11,8 +12,7 @@ class WeatherApi() : Request {
         const val current_url: String = "https://api.weatherbit.io/v2.0/current" // tells you current weather
         const val forecast_url: String = "https://api.weatherbit.io/v2.0/forecast/daily" // tells weather forecast
 
-        private const val key: String = "bb56ea1fb1fc483f8fa00b574719e924"
-        //4e13091f6f574e19997faa7f9b33c2db or bb56ea1fb1fc483f8fa00b574719e924
+        private val key: String = BuildConfig.WEATHER_KEY1
 
         // Default params are for Athens
         private const val def_lat = "37.97945"

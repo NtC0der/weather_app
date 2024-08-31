@@ -12,6 +12,10 @@ android {
     namespace = "com.example.weather_app"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.weather_app"
         minSdk = 24
@@ -19,7 +23,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "WEATHER_KEY1", "4e13091f6f574e19997faa7f9b33c2db")
+        buildConfigField("String", "WEATHER_KEY2", "bb56ea1fb1fc483f8fa00b574719e924")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
